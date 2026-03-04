@@ -24,11 +24,12 @@ def fetch_location_data(geolocator,loc):
     if location is None:
         return None
     
-    return {"location": loc, "latitude": location.latitude, "longitude": location.longitude, "type": location.geo_type}
+    return {"location": loc, "latitude": location.latitude, "longitude": location.longitude, "type": location.raw.get('type', 'unknown')}
 
 def build_geo_dataframe(geolocator, locations):
     geo_data = [fetch_location_data(geolocator, loc) for loc in locations]
-    
+    geo_data = [g for g in geo_data if g is not None]
+ 
     return pd.DataFrame(geo_data)
 
 
